@@ -39,8 +39,8 @@ var humidityFive = document.getElementById("five-humidity")
 https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}
 
 
-// TODO 
-// Function 1 - this function should validate the value of the input.Next function: define the coordinates of the value. Form
+// TODO handling the form submission
+
 function formSubmitHandler(event) {
     event.preventDefault()
 
@@ -54,7 +54,7 @@ function formSubmitHandler(event) {
     }
 
     var userInputArr = []
-    //TODO google later
+    
     userInputArr.push(inputEl.value.split(","))
 
     var cityName = userInputArr[0][0]
@@ -90,7 +90,7 @@ function formSubmitHandler(event) {
     console.log(buttonArray)
 }
 
-//Function to get items from local storage and create buttons for them
+//TODO Function to get items from local storage and create buttons for them
 function searchStorage() {
     var savedButtonArray = JSON.parse(localStorage.getItem("buttonArray"))
 
@@ -111,25 +111,37 @@ function searchStorage() {
 }
 
 searchStorage()
-// weather api
-// http://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={API key} 
 
-// continuing from the search input
-// TODO 
-// Function 2 - this function should use the api to pull the coordinates of the city(hint....geo).Next function: define the api data - weather.And also can add another function to set up local storage.
+// TODO get todays weather
+function getTodayCityWeather(city, country) {
+    var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "," + country + "&appid=" + APIKey
 
-
-// Function 3 - this function should use the api to pull the weather data.Next function: define both current and forecast.
-// TODO current weather
+    fetch(queryURL)
+        .then(function(response) {
+            if (response.ok) {
+                response.json().then(function(data) {
+                    displayTodayWeather(data, city, country)
+                    console.log(response)
+                    console.log(data)
+                })
+            } else {
+                alert("Error " + response.statusText)
+            }
+        })
+        .catch(function(error) {
+            alert("Unable to connect to Weather API")
+        })
+}
+// TODO Display todays weather on todays page 
 function displayTodayWeather (city, searchCity, searchCountry) {
     var currentDate = dayjs().format("dddd, MMMM, D YYYY");
     citySearchTerm.textContent = searchCity + ", " + searchCountry + " - " + currentDate;
 
     var tempKelvin = city.main.temp
-    var tempImperial = (((tempKelvin-273.15)1.8)+32).toFixed(2)
+    var tempImperial = (((tempKelvin-273.15)*1.8)+32).toFixed(2)
 
     var windMeterperSec = city.wind.speed
-    var windImperial = (windMeterperSec2.237).toFixed(2)
+    var windImperial = (windMeterperSec*2.237).toFixed(2)
 
     var icon = city.weather[0].icon
     console.log(icon)
@@ -143,20 +155,105 @@ function displayTodayWeather (city, searchCity, searchCountry) {
     citySearchTerm.appendChild(weatherIcon)
 
 }
-//  Function 4 - this function is very helpful, in the fact you are passing thru specific data info to then pass to the two functions that are only being called out.Next functions - calling out current and forecast.
 
-//  Function 5a - this function should be passing thru the data needed to generate this card - Current Weather.  Review the demo to see what data you need. Remember data is being passed from func to func all the way from the fetch functions -- but in review of the api -- current is only needed for this card. No Next...after this
+// TODO get the latitude and longitude 
+function getLonLat(city, country) {
+    var queryURL = "https://api.openweathermap.org/geo/1.0/direct?q=" + city + "," + country + "&appid=" + APIKey
 
-// Function 5b - this function should be passing thru the data needed for forecast from api and to only iterate thru for the 5 day forecast. Next function will generate the cards from the iteration.
+    fetch(queryURL)
+        .then(function(response) {
+            if (response.ok) {
+                response.json().then(function(data) {
+                    getForecastCityWeather(data)
+                })
+            } else {
+                alert("Error" + response.statusText)
+                console.log(response)
+            }
+        })
+        .catch(function(error) {
+            alert("Unable to connect to Weather API")
+        })
+}
 
-// Function 6 - this function should be an individual card defined by the data being defined and pulled to display on a card.  As the iteration is done, each card should generate. No Next...
 
-// Search History???
-// from function 2 -- 
-// Function 7 - this function sets up local storage setItem.  If you are compiling a list of searches -- what do you need?. Next function will pull from local storage and initialize independently.
+// TODO fetch for forecast
+// https://openweathermap.org/forecast5
+// this is the 5-day forecast documentation, the API call is the code being used below
+//Function handles fetching five-day forecast weather data 
 
-// Function 8 - this function iterates what is pull from local storage and generate buttons.
+function getForecastCityWeather(city) {
+    var latitude = city[0].lat 
+    var longitude = city[0].lon 
 
-// What do you need to do to kick off the buttons?
+    var queryURL = "https://api.openweathermap.org/data/2.5/forecast?lat=" + latitude + "&lon=" + longitude + "&appid=" + APIKey + "&units=imperial"
 
-// Function 9 - this function is kicked off when the search history buttons are clicked, it validates the value of the button as a (hint) e.target which is defined as the original input is defined and validated.  Next function will get the coordinates of the city/location.
+    fetch(queryURL)
+        .then(function(response) {
+            if (response.ok) {
+                response.json().then(function(data) {
+                    displayForecastWeather(data)
+                    console.log(data)
+                })
+            } else {
+                alert("Error" + response.statusText)
+            }
+        })
+        .catch(function(error) {
+            alert("Unable to connect to Weather API")
+        })
+
+}
+
+
+// TODO Display forecast 
+function displayForecastWeather(data) {
+
+    dateOne.textContent = data.list[3].dt_txt.split(" ")[0]
+    tempOne.textContent = "Temp: " + data.list[3].main.temp + "°F"
+    windOne.textContent = "Wind: " + data.list[3].wind.speed + " MPH"
+    humidityOne.textContent = "Humidity: " + data.list[3].main.humidity + "%"
+
+    var iconOne = document.createElement("img")
+    iconOne.setAttribute("src", "https://openweathermap.org/img/wn/" + data.list[3].weather[0].icon + "@2x.png")
+    dateOne.appendChild(iconOne)
+
+    dateTwo.textContent = data.list[11].dt_txt.split(" ")[0]
+    tempTwo.textContent = "Temp: " + data.list[11].main.temp + "°F"
+    windTwo.textContent = "Wind: " + data.list[11].wind.speed + " MPH"
+    humidityTwo.textContent = "Humidity: " + data.list[11].main.humidity + "%"
+
+    var iconTwo = document.createElement("img")
+    iconTwo.setAttribute("src", "https://openweathermap.org/img/wn/" + data.list[11].weather[0].icon + "@2x.png")
+    dateTwo.appendChild(iconTwo)
+
+    dateThree.textContent = data.list[19].dt_txt.split(" ")[0]
+    tempThree.textContent = "Temp: " + data.list[19].main.temp + "°F"
+    windThree.textContent = "Wind: " + data.list[19].wind.speed + " MPH"
+    humidityThree.textContent = "Humidity: " + data.list[19].main.humidity + "%"
+    var iconThree = document.createElement("img")
+    iconThree.setAttribute("src", "https://openweathermap.org/img/wn/" + data.list[19].weather[0].icon + "@2x.png")
+    dateThree.appendChild(iconThree)
+
+    dateFour.textContent = data.list[27].dt_txt.split(" ")[0]
+    tempFour.textContent = "Temp: " + data.list[27].main.temp + "°F"
+    windFour.textContent = "Wind: " + data.list[27].wind.speed + " MPH"
+    humidityFour.textContent = "Humidity: " + data.list[27].main.humidity + "%"
+
+    var iconFour = document.createElement("img")
+    iconFour.setAttribute("src", "https://openweathermap.org/img/wn/" + data.list[27].weather[0].icon + "@2x.png")
+    dateFour.appendChild(iconFour)
+
+    dateFive.textContent = data.list[35].dt_txt.split(" ")[0]
+    tempFive.textContent = "Temp: " + data.list[35].main.temp + "°F"
+    windFive.textContent = "Wind: " + data.list[35].wind.speed + " MPH"
+    humidityFive.textContent = "Humidity: " + data.list[35].main.humidity + "%"
+
+    var iconFive = document.createElement("img")
+    iconFive.setAttribute("src", "https://openweathermap.org/img/wn/" + data.list[35].weather[0].icon + "@2x.png")
+    dateFive.appendChild(iconFive)
+}
+
+//Click events
+userFormEl.addEventListener("submit", formSubmitHandler)
+historyContainer.addEventListener("click", formSubmitHandler)
