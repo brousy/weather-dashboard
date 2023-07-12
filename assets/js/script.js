@@ -1,8 +1,18 @@
 // Global variables
 
-var API = "ce4db938844e03dfccf351ac50c00534"
+// API key for OpenWeatherMap API
+var APIKey = "ce4db938844e03dfccf351ac50c00534";
+
 countryCode = ['AF', 'AX', 'AL', 'DZ', 'AS', 'AD', 'AO', 'AI', 'AQ', 'AG', 'AR', 'AM', 'AW', 'AU', 'AT', 'AZ', 'BS', 'BH', 'BD', 'BB', 'BY', 'BE', 'BZ', 'BJ', 'BM', 'BT', 'BO', 'BA', 'BW', 'BV', 'BR', 'IO', 'BN', 'BG', 'BF', 'BI', 'KH', 'CM', 'CA', 'CV', 'KY', 'CF', 'TD', 'CL', 'CN', 'CX', 'CC', 'CO', 'KM', 'CG', 'CD', 'CK', 'CR', 'CI', 'HR', 'CU', 'CY', 'CZ', 'DK', 'DJ', 'DM', 'DO', 'EC', 'EG', 'SV', 'GQ', 'ER', 'EE', 'ET', 'FK', 'FO', 'FJ', 'FI', 'FR', 'GF', 'PF', 'TF', 'GA', 'GM', 'GE', 'DE', 'GH', 'GI', 'GR', 'GL', 'GD', 'GP', 'GU', 'GT', 'GG', 'GN', 'GW', 'GY', 'HT', 'HM', 'VA', 'HN', 'HK', 'HU', 'IS', 'IN', 'ID', 'IR', 'IQ', 'IE', 'IM', 'IL', 'IT', 'JM', 'JP', 'JE', 'JO', 'KZ', 'KE', 'KI', 'KR', 'KW', 'KG', 'LA', 'LV', 'LB', 'LS', 'LR', 'LY', 'LI', 'LT', 'LU', 'MO', 'MK', 'MG', 'MW', 'MY', 'MV', 'ML', 'MT', 'MH', 'MQ', 'MR', 'MU', 'YT', 'MX', 'FM', 'MD', 'MC', 'MN', 'ME', 'MS', 'MA', 'MZ', 'MM', 'NA', 'NR', 'NP', 'NL', 'AN', 'NC', 'NZ', 'NI', 'NE', 'NG', 'NU', 'NF', 'MP', 'NO', 'OM', 'PK', 'PW', 'PS', 'PA', 'PG', 'PY', 'PE', 'PH', 'PN', 'PL', 'PT', 'PR', 'QA', 'RE', 'RO', 'RU', 'RW', 'BL', 'SH', 'KN', 'LC', 'MF', 'PM', 'VC', 'WS', 'SM', 'ST', 'SA', 'SN', 'RS', 'SC', 'SL', 'SG', 'SK', 'SI', 'SB', 'SO', 'ZA', 'GS', 'ES', 'LK', 'SD', 'SR', 'SJ', 'SZ', 'SE', 'CH', 'SY', 'TW', 'TJ', 'TZ', 'TH', 'TL', 'TG', 'TK', 'TO', 'TT', 'TN', 'TR', 'TM', 'TC', 'TV', 'UG', 'UA', 'AE', 'GB', 'US', 'UM', 'UY', 'UZ', 'VU', 'VE', 'VN', 'VG', 'VI', 'WF', 'EH', 'YE', 'ZM', 'ZW']
-// button array
+
+// Get HTML elements by their IDs
+var userFormEl = document.getElementById("user-form")
+var inputEl = document.getElementById("city-name")
+var citySearchTerm = document.getElementById("city")
+var historyBtns = document.querySelector(".save-buttons")
+var historyContainer = document.getElementById("search-history-container")
+
+// Array to store search history buttons
 var savedSearches = [];
  
 var tempToday = document.getElementById("temp-today");
@@ -45,6 +55,7 @@ function formSubmitHandler(event) {
     event.preventDefault()
 
     if (event.target.matches(".btn")) {
+        // If the clicked element is a search history button
         console.log(event.target.textContent)
         var buttonCityName = event.target.textContent.split(",")[0]
         var buttonCountryName = event.target.textContent.split(",")[1]
@@ -52,6 +63,7 @@ function formSubmitHandler(event) {
         getLonLat(buttonCityName, buttonCountryName)
         return
     }
+// Split user input into city and country
 
     var userInputArr = []
     
@@ -63,22 +75,23 @@ function formSubmitHandler(event) {
     console.log(userInputArr)
     console.log(cityName)
     console.log(countryName)
-
+// Check if the entered country code is valid
     if (countryCode.includes(countryName)) {
         if (cityName && countryName) {
+            // If city name and country code are provided
             getTodayCityWeather(cityName, countryName)
             getLonLat(cityName, countryName)
             inputEl.value = ""
-
+// Retrieve the search history array from local storage
             var buttonArray = JSON.parse(localStorage.getItem("buttonArray"))
             if (!buttonArray) {
                 buttonArray = []
             } 
-            buttonArray.push({cityName, countryName})
-            localStorage.setItem("buttonArray", JSON.stringify(buttonArray))
+            buttonArray.push({ cityName, countryName }); // Add the current search to the array
+            localStorage.setItem("buttonArray", JSON.stringify(buttonArray)); // Store the updated array back to local storage
 
-            // city history
-            var savedCityBtn = document.createElement("button")
+            // Create a new search history button
+            var savedCityBtn = document.createElement("button");
             savedCityBtn.textContent = cityName + ", " + countryName
             savedCityBtn.setAttribute("class", "btn btn-secondary")
             historyBtns.appendChild(savedCityBtn)
@@ -102,16 +115,18 @@ function searchStorage() {
 
         var savedCityName = savedButtonArray[i].cityName
         var savedCountryName = savedButtonArray[i].countryName
-
+// Create a search history button
         var savedCityBtn = document.createElement("button")
         savedCityBtn.textContent = savedCityName + ", " + savedCountryName
         savedCityBtn.setAttribute("class", "btn btn-secondary")
         historyBtns.appendChild(savedCityBtn)
     }
 }
-
+// Call the function to load search history buttons from local storage
 searchStorage()
 
+// Today's weather API documentation: https://openweathermap.org/current
+// Function to get today's weather for a city
 // TODO get todays weather
 function getTodayCityWeather(city, country) {
     var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "," + country + "&appid=" + APIKey
@@ -155,7 +170,8 @@ function displayTodayWeather (city, searchCity, searchCountry) {
     citySearchTerm.appendChild(weatherIcon)
 
 }
-
+// Geocoding API documentation: https://openweathermap.org/api/geocoding-api
+// Function to get the latitude and longitude of a city
 // TODO get the latitude and longitude 
 function getLonLat(city, country) {
     var queryURL = "https://api.openweathermap.org/geo/1.0/direct?q=" + city + "," + country + "&appid=" + APIKey
@@ -255,5 +271,6 @@ function displayForecastWeather(data) {
 }
 
 //Click events
+// Event listeners for form submission and search history buttons
 userFormEl.addEventListener("submit", formSubmitHandler)
 historyContainer.addEventListener("click", formSubmitHandler)
