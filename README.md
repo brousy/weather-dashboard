@@ -50,6 +50,8 @@ The MIT License (MIT)
 ## Screen Shots
 <!-- add screen shots to image folder -->
 ![screenshot](./assets/images/Screenshot%202023-07-12%20at%206.18.04%20PM.png)
+![philly](./assets/images/miami.png)
+![miami](./assets/images/miami.png)
 ## Live Link to App
 
 [https://brousy.github.io/weather-dashboard/]
