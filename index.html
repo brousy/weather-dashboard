@@ -1,111 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- link bootstrap -->
-    <!-- TODO link icon -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="./assets/css/style.css">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+      crossorigin="anonymous"
+    />
+
+    <link rel="stylesheet" href="./assets/css/style.css" />
     <title>Weather Dashboard</title>
-</head>
+  </head>
 
-<body>
-    <header>Weather Dashboard</header>
+  <body>
+    <header class="min-vw-100 p-4 text-center bg-dark text-light">
+      <h1>Weather Dashboard</h1>
+    </header>
+
     <div class="row d-flex">
-        <div class="row d-flex">
-            <!-- Search by city form -->
-            <div class="card col-md-4 p-3">
-                <div class="card-body">
-                    <h3 class="card-header fw-bold">Search By City</h3>
-                    <form id="user-form" class="card-body d-grid gap-2">
-                        <input name="city-name" id="city-name" type="text" autofocus="true" class="form-input"
-                            placeholder="City, Country Code" />
-                        <button type="submit" class="btn btn-primary">Search</button>
-                    </form>
-                </div>
-            </div>
-
-
-            <!-- Today's forecast -->
-            <div class="card col-md-8 p-3">
-                <div id="city" class="card-header fs-3 fw-bold">City Name</div>
-                <ul class="list-group list-group-flush">
-                    <li id="temp-today" class="list-group-item">Temp:</li>
-                    <li id="wind-today" class="list-group-item">Wind:</li>
-                    <li id="humidity-today" class="list-group-item">Humidity:</li>
-                </ul>
-            </div>
+      <!-- Search by city form -->
+      <div class="card col-md-4 p-3">
+        <div class="card-body">
+          <h3 class="card-header fw-bold">Search By City</h3>
+          <form id="user-form" class="card-body d-grid gap-2">
+            <input
+              name="city-name"
+              id="city-name"
+              type="text"
+              autofocus="true"
+              class="form-input"
+              placeholder="City, Country Code"
+            />
+            <button type="submit" class="btn btn-primary">Search</button>
+          </form>
         </div>
+      </div>
 
-        <div class="row">
+      <!-- Today's forecast -->
+      <div class="card col-md-8 p-3">
+        <div id="city" class="card-header fs-3 fw-bold">City Name</div>
+        <ul class="list-group list-group-flush">
+          <li id="temp-today" class="list-group-item">Temp:</li>
+          <li id="wind-today" class="list-group-item">Wind:</li>
+          <li id="humidity-today" class="list-group-item">Humidity:</li>
+        </ul>
+      </div>
+    </div>
 
-            <!-- Search history buttons go here -->
-            <div id="search-history-container" class="card col-md-4 p-3">
-                <h3 class="card-header fs-3 fw-bold">Search History:</h3>
-                <ul class="save-buttons d-grid gap-2"></ul>
+    <div class="row">
+      <!-- Search history buttons go here -->
+      <div id="search-history-container" class="card col-md-4 p-3">
+        <h3 class="card-header fs-3 fw-bold">Search History:</h3>
+        <ul class="save-buttons d-grid gap-2"></ul>
+      </div>
+
+      <!-- 5 day forecast -->
+      <div class="card col-md-8 p-3">
+        <div id="forecast">
+          <h3 class="card-header fs-3 fw-bold">5 Day Forecast:</h3>
+          <div id="forecast-container">
+            <div class="row p-3">
+              <!-- Day one forecast -->
+              <div class="card col-md-2 m-1 forecast-card">
+                <div class="card-body">
+                  <h5 id="day-one" class="card-title"></h5>
+                  <p id="one-temp" class="card-text">Temp:</p>
+                  <p id="one-wind" class="card-text">Wind:</p>
+                  <p id="one-humidity" class="card-text">Humidity:</p>
+                </div>
+              </div>
+
+              <!-- Day two forecast -->
+              <div class="card col-md-2 m-1 forecast-card">
+                <div class="card-body">
+                  <h5 id="day-two" class="card-title"></h5>
+                  <p id="two-temp" class="card-text">Temp:</p>
+                  <p id="two-wind" class="card-text">Wind:</p>
+                  <p id="two-humidity" class="card-text">Humidity:</p>
+                </div>
+              </div>
+
+              <!-- Day three forecast -->
+              <div class="card col-md-2 m-1 forecast-card">
+                <div class="card-body">
+                  <h5 id="day-three" class="card-title"></h5>
+                  <p id="three-temp" class="card-text">Temp:</p>
+                  <p id="three-wind" class="card-text">Wind:</p>
+                  <p id="three-humidity" class="card-text">Humidity:</p>
+                </div>
+              </div>
+
+              <!-- Day four forecast -->
+              <div class="card col-md-2 m-1 forecast-card">
+                <div class="card-body">
+                  <h5 id="day-four" class="card-title"></h5>
+                  <p id="four-temp" class="card-text">Temp:</p>
+                  <p id="four-wind" class="card-text">Wind:</p>
+                  <p id="four-humidity" class="card-text">Humidity:</p>
+                </div>
+              </div>
+
+              <!-- Day five forecast -->
+              <div class="card col-md-2 m-1 forecast-card">
+                <div class="card-body">
+                  <h5 id="day-five" class="card-title"></h5>
+                  <p id="five-temp" class="card-text">Temp:</p>
+                  <p id="five-wind" class="card-text">Wind:</p>
+                  <p id="five-humidity" class="card-text">Humidity:</p>
+                </div>
+              </div>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-            <!-- 5 day forecast -->
+    <!-- dayjs library -->
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.3/dayjs.min.js" integrity="sha256-iu/zLUB+QgISXBLCW/mcDi/rnf4m4uEDO0wauy76x7U=" crossorigin="anonymous"></script> 
 
-            <div class="card col-md-8 p-3">
-                <div id="forecast">
-                    <h3 class="card-header fs-3 fw-bold">5 Day Forecast:</h3>
-                    <div id="forecast-container">
-                        <div class="row p-3">
-                            <!-- Day one forecast -->
-                            <div class="card col-md-2 m-1 forecast-card">
-                                <div class="card-body">
-                                    <h5 id="day-one" class="card-title"></h5>
-                                    <p id="one-temp" class="card-text">Temp:</p>
-                                    <p id="one-wind" class="card-text">Wind:</p>
-                                    <p id="one-humidity" class="card-text">Humidity:</p>
-                                </div>
-                            </div>
-                            <div class="card col-md-2 m-1 forecast-card">
-                                <div class="card-body">
-                                    <h5 id="day-two" class="card-title"></h5>
-                                    <p id="two-temp" class="card-text">Temp:</p>
-                                    <p id="two-wind" class="card-text">Wind:</p>
-                                    <p id="two-humidity" class="card-text">Humidity:</p>
-                                </div>
-                            </div>
-                            <div class="card col-md-2 m-1 forecast-card">
-                                <div class="card-body">
-                                    <h5 id="day-three" class="card-title"></h5>
-                                    <p id="three-temp" class="card-text">Temp:</p>
-                                    <p id="three-wind" class="card-text">Wind:</p>
-                                    <p id="three-humidity" class="card-text">Humidity:</p>
-                                </div>
-                            </div>
-                            <div class="card col-md-2 m-1 forecast-card">
-                                <div class="card-body">
-                                    <h5 id="day-four" class="card-title"></h5>
-                                    <p id="four-temp" class="card-text">Temp:</p>
-                                    <p id="four-wind" class="card-text">Wind:</p>
-                                    <p id="four-humidity" class="card-text">Humidity:</p>
-                                </div>
-                            </div>
-                            <div class="card col-md-2 m-1 forecast-card">
-                                <div class="card-body">
-                                    <h5 id="day-five" class="card-title"></h5>
-                                    <p id="five-temp" class="card-text">Temp:</p>
-                                    <p id="five-wind" class="card-text">Wind:</p>
-                                    <p id="five-humidity" class="card-text">Humidity:</p>
-                                </div>
-                            </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+    crossorigin="anonymous"></script>
 
-                            <!-- dayjs library -->
-                            <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.3/dayjs.min.js"
-                                integrity="sha256-iu/zLUB+QgISXBLCW/mcDi/rnf4m4uEDO0wauy76x7U="
-                                crossorigin="anonymous"></script>
-
-                            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-                                integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-                                crossorigin="anonymous"></script>
-                            <script src="./assets/js/script.js"></script>
-</body>
-
+    <script src="./assets/js/script.js"></script>
+  </body>
 </html>
