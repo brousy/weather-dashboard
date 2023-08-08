@@ -116,6 +116,7 @@ function searchStorage() {
 
 searchStorage();
 
+
 //Function handles fetching weather data for today's weather
 function getTodayCityWeather(city, country) {
     var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "," + country + "&appid=" + APIKey

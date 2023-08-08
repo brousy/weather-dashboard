@@ -88,33 +88,27 @@ function formSubmitHandler(event) {
     console.log(buttonArray)
 }
 
-// Function to get items from local storage and create buttons for them
+//Function to get items from local storage and create buttons for them
 function searchStorage() {
-    var savedButtonArray = JSON.parse(localStorage.getItem("buttonArray"));
+    var savedButtonArray = JSON.parse(localStorage.getItem("buttonArray"))
 
     if (!savedButtonArray) {
-        savedButtonArray = [];
-    }
-
-    var addedCities = []; // Keep track of added cities to avoid duplicates
+        savedButtonArray = []
+    } 
 
     for (var i = 0; i < savedButtonArray.length; i++) {
-        var savedCityName = savedButtonArray[i].cityName;
-        var savedCountryName = savedButtonArray[i].countryName;
 
-        // Check if the city has already been added to avoid duplicates
-        if (!addedCities.includes(savedCityName)) {
-            var savedCityBtn = document.createElement("button");
-            savedCityBtn.textContent = savedCityName + ", " + savedCountryName;
-            savedCityBtn.setAttribute("class", "btn btn-secondary");
-            historyBtns.appendChild(savedCityBtn);
+        var savedCityName = savedButtonArray[i].cityName
+        var savedCountryName = savedButtonArray[i].countryName
 
-            addedCities.push(savedCityName);
-        }
+        var savedCityBtn = document.createElement("button")
+        savedCityBtn.textContent = savedCityName + ", " + savedCountryName
+        savedCityBtn.setAttribute("class", "btn btn-secondary")
+        historyBtns.appendChild(savedCityBtn)
     }
 }
 
-searchStorage();
+searchStorage()
 
 //Function handles fetching weather data for today's weather
 function getTodayCityWeather(city, country) {
