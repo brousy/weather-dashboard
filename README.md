@@ -54,4 +54,4 @@ The MIT License (MIT)
 ![miami](./assets/images/miami.png)
 ## Live Link to App
 
-[https://brousy.github.io/weather-dashboard/]
+[GitHub](https://brousy.github.io/weather-dashboard/)
