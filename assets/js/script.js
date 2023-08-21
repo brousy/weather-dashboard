@@ -56,7 +56,7 @@ function formSubmitHandler(event) {
     userInputArr.push(inputEl.value.split(","))
     
     var cityName = userInputArr[0][0]
-    var countryName = userInputArr[0][1].trim()
+    var countryName = "US"
 
     console.log(userInputArr)
     console.log(cityName)
